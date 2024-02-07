@@ -1,0 +1,51 @@
+homework2
+
+ 1. Создать таблицу employees;
+employeeid целое число первичный ключ автоинкремент;
+fname строка не null,
+lastname строка не null,
+email строка не null,
+phone строка не null
+
+create table employees(
+employeeid int primary key auto_increment,
+ fname varchar(50) not null,
+ lastname varchar(50) not null,
+ email varchar(50) not null,
+ phone varchar(50) not null
+);
+
+2. Ой, забыли про зарплату)) Добавить поле salary numeric(9, 2),
+
+alter table employees
+add salary numeric(9, 2);
+
+3. Ойййй, нет, зарплата должна быть целым числом. Изменить тип salary на integer 
+
+alter table employees
+modify column salary integer;
+
+4. Переименовать поле fname на first_name
+
+alter table employees
+change fname first_name varchar(50);
+
+5. Удалить поле phone
+
+alter table employees
+drop column phone;
+
+6. Добавить поле department строка не null 
+
+alter table employees
+add department varchar(50) not null;
+
+7. Заполнить таблицу (7 строк)
+
+INSERT INTO employees1(first_name, lastname, email, salary, department) VALUES 
+        ('denys', 'semeniv', '1@gmail.com', 1000, 'frontend'),
+         ('andrey', 'sidorenko', '2@gmail.com', 2000, 'backend'),
+           ('sergey', 'petrov', '3@gmail.com', 3000, 'qa'),
+                 ('alex', 'ivanov', '4@gmail.com', 4000, 'frontend'),
+                    ('mika', 'shevchenko', '5@gmail.com', 1000, 'hr');
+
