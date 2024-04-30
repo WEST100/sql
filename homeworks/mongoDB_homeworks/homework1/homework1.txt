@@ -1,0 +1,66 @@
+use homeworks
+
+db.createCollection('users')
+
+db.users.insertMany([
+    {
+              _id: 1,
+              name: 'Анатолий',
+              lastName: 'Ушанов',
+				age: 28,
+				gender: 'm'
+      },
+    {
+              _id: 2,
+              name: 'Светлана',
+              lastName: 'Демидова',
+              age: 25,
+			gender: 'f',
+      },
+    {
+			_id: 3,
+              name: 'Никита',
+              lastName: 'Иванов',
+              age: 33,
+			gender: 'm'
+		},
+    {
+				_id: 4,	
+              name: 'Ольга',
+              lastName: 'Петрова',
+              age: 22,
+			gender: 'f'
+		}
+  ])
+
+
+db.vegetables.insertMany([
+    {
+              _id: 1,
+              title: 'Potato',
+              price: 370,
+				count: 5,
+				country: 'Germany'
+      },
+    {
+              _id: 2,
+              title: 'Onion',
+              price: 320,
+              count: 3,
+			country: 'Poland',
+      },
+    {
+			_id: 3,
+              title: 'Tomato',
+              price: 210,
+              count: 9,
+			country: 'Spain'
+		},
+    {
+				_id: 4,	
+              title: 'Carrot',
+              price: 280,
+              count: 4,
+			country: 'France'
+		}
+  ])
