@@ -1,0 +1,185 @@
+1. Создать коллекцию products и заполнить документами (6 штук) со следующими свойствами (_id, title, price, count). Используйте следующие данные
+
+1 Велосипед 45000 12
+2 Самокат 1500 10
+3 Ролики 2000 20
+4 Лыжи 22000 15
+5 Скейт 19000 4
+6 Сноуборд 33000 17
+
+db.products.insertMany([
+  { _id: 1, title: 'Велосипед', price: 45000, count: 12 },
+  { _id: 2, title: 'Самокат', price: 15000, count: 10 },
+  { _id: 3, title: 'Ролики', price: 2000, count: 20 },
+  { _id: 4, title: 'Лыжи', price: 22000, count: 15 },
+  { _id: 5, title: 'Скейт', price: 19000, count: 4 },
+  { _id: 6, title: 'Сноуборд', price: 33000, count: 17 },
+])
+
+2. У всех товаров, кол-во которых меньше 10, задайте кол-во 10
+
+db.products.updateMany({count: {$lt: 10}}, {$set: {count: 10}})
+
+3. У всех товаров, цена которых меньше 20000 увеличьте цену на 5000
+
+db.products.updateMany({price: {$lt: 20000}}, {$inc: {price: 5000}})
+
+4. Добавить свойство страны (country) а в качестве значения пустой массив. Свойство в дальнейшем будет содержать страны поставщиков
+
+db.products.updateMany({}, {$set: {country: []}})
+
+5. Товарам с id 1 и 4 добавить в качестве поставщика(в массив country) Испанию
+
+db.products.updateMany({_id: {$in: [1, 4]}}, {$addToSet: {country: 'Spain'}})
+
+6. Товарам с id 1 и 3 добавить в качестве поставщиков Америку и Бразилию
+
+db.products.updateMany({_id: {$in: [1, 3]}}, {$addToSet: {country: {$each: ['usa', 'brasil']}}})
+
+7. Товару с id 2 добавьте в качестве поставщика Японию, Корею и Китай
+
+db.products.updateOne({_id: 1}, {$addToSet: {country: {$each: ['japan', 'korea', 'china']}}})
+
+8. Для товара "Ролики" убрать поставщика Америка
+
+db.products.updateOne({title: 'Ролики'}, { $pull: {country: 'usa'}})
+
+9. Всем товарам добавить свойство quality со значением 0
+
+db.products.updateMany({}, {$set: {quality: 0}})
+
+10. Товарам которые стоят больше 20000 установить в свойстве quality значение 10
+
+db.products.updateMany({price: {$gt: 20000}}, {$set: {quality: 10}})
+
+11. Товарам которые стоят не больше 20000 установить в свойстве quality значение 5
+
+db.products.updateMany({price: {$lte: 20000}}, {$set: {quality: 5}})
+
+12. Удалить поле count для всех товаров
+
+db.products.updateMany({}, {$unset: {count: 1}})
+
+13. Всем товарам добавить в качестве поставщиков Францию и Италию
+
+db.products.updateMany({}, {$addToSet: {country: {$each: ['france', 'italy']}}})
+
+14. Для товаров с id 1, 3 и 6 удалить поставщика Италия.
+
+db.products.updateMany({_id: {$in: [1, 3]}}, { $pull: {country: 'italy'}})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Есть коллекция employees:
+
+db.employees.insertMany([
+  { "name": "Alice", "age": 28, "position": "Manager", "salary": 5000 },
+  { "name": "Bob", "age": 35, "position": "Developer", "salary": 6000 },
+  { "name": "Charlie", "age": 24, "position": "Designer", "salary": 4000 },
+  { "name": "David", "age": 31, "position": "Analyst", "salary": 5500 },
+  { "name": "Eva", "age": 29, "position": "HR", "salary": 4500 }
+])
+
+1. Найти первых двух сотрудников в списке.
+
+db.employees.find().limit(2)
+
+2.Найти сотрудников в возрасте до 30 лет и отсортировать их по возрасту в порядке возрастания.
+
+db.employees.find({age: {$lt: 30}}).sort({age: 1})
+
+3.Найти сотрудников, пропустив первых двух и ограничив выборку следующими тремя.
+
+db.employees.find().skip(2).limit(3)
+
+4.Найти сотрудников, занимающих позицию "Developer" и отсортировать их по возрасту в порядке убывания.
+
+db.employees.find({position: 'Developer'}).sort({age: -1})
+
+5.Найти сотрудников, занимающих позицию "Manager" и "HR", и отобразить только их имена, ограничив выборку первыми двумя.
+
+db.employees.find(
+    {
+        $or: [
+            {position: "Manager"},
+            {position: "HR"},
+        ]
+    }, {name: 1, _id: 0}
+).limit(2)
+
+6.Найти сотрудников с зарплатой от 4500 до 5500 и отсортировать их по возрасту в порядке возрастания.
+
+db.employees.find({salary: {$gt: 4500, $lt: 5500}}).sort({age: 1})
+
+7.Найти сотрудников с зарплатой выше 5000, пропустив первого, и отобразить только их имена.
+
+db.employees.find({salary: {$gt: 5000}}, {name: 1, _id: 0}).skip(1)
+
+8.Найти сотрудников, отсортированных по возрасту в порядке убывания, и вернуть только первого.
+
+db.employees.find().sort({age: -1}).limit(1)
+
+9.Найти сотрудников в возрасте от 25 до 35 лет и ограничить список первыми тремя.
+
+db.employees.find(
+    {
+        $and: [
+            {age: {$gte: 25}},
+            {age: {$lte: 35}}
+        ]
+    }
+).limit(3)
+
+10.Найти сотрудников с позициями "Manager" или "Developer" и вернуть только их имена и позиции, отсортированных по позиции в алфавитном порядке.
+
+db.employees.find(
+    {
+        $or: [
+            {position: "Manager"},
+            {position: "Developer"},
+        ]
+    }, {name: 1, _id: 0}, {position: 1, _id: 0}
+).sort()
+
+11.Найти сотрудников с зарплатой выше 4000, пропустив первых двух, и отобразить только их имена и зарплаты.
+
+db.employees.find({salary: {$gt: 4000}}, {name: 1, _id: 0, salary: 1}).skip(2)
+
+12.Найти сотрудников с зарплатой меньше 5500 и отобразить только их имена, отсортированные по имени в алфавитном порядке.
+
+db.employees.find({salary: {$lt: 5500}}, {name: 1, _id: 0}).sort()
+
+13. Найти сотрудников с позицией "Analyst" и вернуть только их имена и позиции, отсортированных по возрасту в порядке убывания, пропустив первого.
+
+db.employees.find({position: "Analyst"}, {name: 1, _id: 0, position: 1}).sort({age: -1}).skip(1)
